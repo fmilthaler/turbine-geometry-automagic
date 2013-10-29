@@ -1,3 +1,21 @@
+#File: TGAM.py
+#Copyright (C) 2013 Frank Milthaler.
+#
+#This file is part of turbine-geometry-automagic.
+#
+#turbine-geometry-automagic is free software: you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+#
+#turbine-geometry-automagic is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#
+#You should have received a copy of the GNU General Public License
+#along with turbine-geometry-automagic. If not, see <http://www.gnu.org/licenses/>.
+
 # This python class automagically writes a "journal" script which contains all the
 # Cubit commands necessary to generate the geometry and mesh of a (wind/tidal) turbine.
 # The generated geometry/mesh is simplified such that it does not replace the hard work
