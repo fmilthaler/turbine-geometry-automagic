@@ -25,7 +25,7 @@ This project provides the user a Python class which allows the them to specify a
 Dependencies
 ==========================
 TGAM depends on the following software:
-  * Python (> v. 2.7)
+  * Python (> v. 2.7, see http://python.org)
   * Cubit (tested with v. 13.0, see http://cubit.sandia.gov)
 
 
