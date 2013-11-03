@@ -37,3 +37,8 @@ Are to be uploaded in the near future.
 Documentation
 ==========================
 On the to do list.
+
+
+Note
+==========================
+This is still in the alpha stage but has been proven useful several times. Documentation and examples shall be added once it is moved to its first beta version.
