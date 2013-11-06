@@ -1863,6 +1863,7 @@ class TGAM:
     print "\n============================================================================"
     print " Conversion from textfile to a "+cad_package.upper()+" readable file was successful."
     print " Start "+cad_package.upper()+", and run the file:\n    "+outputfilename
+    print " through Cubit's 'journal editor'"
     print " to automatically generate the desired geometry and mesh files."
     print "============================================================================"
 
