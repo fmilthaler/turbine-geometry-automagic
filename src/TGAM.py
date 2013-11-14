@@ -329,8 +329,20 @@ class TGAM:
 
       # Start processing the file:
       infile = open(filename, 'r')
-      # Assume that the first line always contains the name of the geometry:
-      infile.readline().strip()
+      # Check if the first line contains data or a comment/text:
+      firstline = infile.readline().strip()
+      try:
+          if (len(firstline.split()) == 2):
+              float(firstline.split()[0])
+              float(firstline.split()[1])
+          else:
+              # raise an exception:
+              raise Exception()
+      except:
+          # in this case, close the file, and open it again:
+          infile.close()
+          infile = open(filename, 'r')
+      # Start processing the content of the file:
       # Extract coordinates from Text file:
       # Variables for point ids:
       pointid = 0
@@ -357,9 +369,9 @@ class TGAM:
       # Done processing text input file:
       infile.close()
       # Deleting first and last entry in coordinates, as those can cause trouble for meshing:
-      #del coordinates[0]; del coordinates[-1]; 
+      #del coordinates[0]; del coordinates[-1];
       # Deleting last entry in coordinates only, iff it has the same coordinates as the first entry:
-      if (coordinates[0] == coordinates[-1]): del coordinates[-1]; 
+      if (coordinates[0] == coordinates[-1]): del coordinates[-1];
       # Give the user a warning, if too many coordinates were found:
       if (len(coordinates) >= 99):
           print "-----------------------------------------------------------------------------"
