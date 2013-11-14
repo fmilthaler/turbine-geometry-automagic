@@ -368,8 +368,6 @@ class TGAM:
           coordinates.append(coord)
       # Done processing text input file:
       infile.close()
-      # Deleting first and last entry in coordinates, as those can cause trouble for meshing:
-      #del coordinates[0]; del coordinates[-1];
       # Deleting last entry in coordinates only, iff it has the same coordinates as the first entry:
       if (coordinates[0] == coordinates[-1]): del coordinates[-1];
       # Give the user a warning, if too many coordinates were found:
