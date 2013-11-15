@@ -1761,9 +1761,9 @@ class TGAM:
 
     
     # If we are generating a python script for Cubit, import modules first:
-    if (cad_package == 'cubit'):
-      self.cadlines.append(self.commentchar+' Loading modules:')
-      self.cadlines.append('import cubit '+self.commentchar+' make sure the path of your "cubit.py" is added to PYTHONPATH\n')
+    #if (cad_package == 'cubit'):
+    #  self.cadlines.append(self.commentchar+' Loading modules:')
+    #  self.cadlines.append('import cubit '+self.commentchar+' make sure the path of your "cubit.py" is added to PYTHONPATH\n')
 
     # Start generating the cubit/gmsh commands:
     # Read in textfile and get coordinates:
