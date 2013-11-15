@@ -1082,12 +1082,12 @@ class TGAM:
     if (num_blades > 1):
       blade_rotangle = 360.0/num_blades
       volid_string = ' '.join([str(volid) for volid in volume_list])
-      self.cadlines.append('\n'+self.commentchar+' Creating '+str(num_blades-1)+' copies of the volume, and rotate those:')
+      self.cadlines.append('\n'+self.commentchar+' Creating '+str(num_blades-1)+' copies of the volume, and rotate these:')
       self.cadlines.append(self.cubitcmdopen+'volume '+volid_string+' copy rotate '+str(blade_rotangle)+' about x repeat '+str(num_blades-1)+self.cubitcmdclose)
       if (self.extrusion_length[-1] > 0):
-          self.cadlines.append(self.cubitcmdopen+'move volume '+volid_string+' z '+str(self.hub_radius*0.85)+' include_merged'+self.cubitcmdclose)
+          self.cadlines.append(self.cubitcmdopen+'move volume '+volid_string+' z '+str(round(self.hub_radius*0.85,5))+' include_merged'+self.cubitcmdclose)
       elif (self.extrusion_length[-1] < 0):
-          self.cadlines.append(self.cubitcmdopen+'move volume '+volid_string+' z '+str(-self.hub_radius*0.85)+' include_merged'+self.cubitcmdclose)
+          self.cadlines.append(self.cubitcmdopen+'move volume '+volid_string+' z '+str(-round(self.hub_radius*0.85,5))+' include_merged'+self.cubitcmdclose)
       # Now that n copies of the blade were generated, move those away from 0,0,0
       if (self.extrusion_length[-1] > 0): movefactor = 1.0
       elif (self.extrusion_length[-1] < 0): movefactor = -1.0
@@ -1095,6 +1095,9 @@ class TGAM:
         volid_copy_string = str(volume_list[-1]+1)+' '+str(volume_list[-1]+2)
         z_move = movefactor * (self.hub_radius*0.85) * cos((i-1)*blade_rotangle*(pi/180.0))
         y_move = movefactor * (self.hub_radius*0.85) * (-1.0)*sin((i-1)*blade_rotangle*(pi/180.0))
+        # Rounding to 5 decimal points:
+        z_move = round(z_move,5)
+        y_move = round(y_move,5)
         if (abs(z_move) < 1e-15): z_move = 0.0
         if (abs(y_move) < 1e-15): y_move = 0.0
         self.cadlines.append(self.cubitcmdopen+'move volume '+volid_copy_string+' y '+str(y_move)+' z '+str(z_move)+' include_merged'+self.cubitcmdclose)
