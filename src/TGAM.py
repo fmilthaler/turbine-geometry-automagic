@@ -335,13 +335,14 @@ class TGAM:
           if (len(firstline.split()) == 2):
               float(firstline.split()[0])
               float(firstline.split()[1])
+              # if all that was successful, close the file, and open it again:
+              infile.close()
+              infile = open(filename, 'r')
           else:
-              # raise an exception:
-              raise Exception()
+              raise Exception
       except:
-          # in this case, close the file, and open it again:
-          infile.close()
-          infile = open(filename, 'r')
+          None # nothing to do here
+
       # Start processing the content of the file:
       # Extract coordinates from Text file:
       # Variables for point ids:
