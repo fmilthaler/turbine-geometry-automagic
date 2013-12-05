@@ -395,8 +395,7 @@ class TGAM:
     if (self.cad_package == 'cubit'):
         vertex_list = self.write_2d_vertices_cubit(coordinates, vertex_list)
     else:
-        for i in range(self.num_blades):
-            vertex_list = self.write_2d_vertices_gmsh(coordinates, vertex_list, placement[i], rotation[i])
+        vertex_list = self.write_2d_vertices_gmsh(coordinates, vertex_list, placement, rotation)
     return vertex_list
 
 
@@ -595,7 +594,7 @@ class TGAM:
   ###############################################################
   # Creating lines/curves and surfaces for blade cross section: #
   ###############################################################
-  def create_lines_surface_cross_sections(self, num_points, num_cs, vertex_list, curve_list, surface_list):
+  def create_lines_surface_cross_sections(self, num_points, num_cs, vertex_list, curve_list, surface_list, blade=1):
     """ A higher-level interface to generate lines (linear/spline) to connect the created points:
         Input:
            num_points: Integer, number of points of original cross section
@@ -603,6 +602,7 @@ class TGAM:
            vertex_list: list of vertices generated in cubit
            curve_list: list of curves generated in cubit
            surface_list: list of surface generated in cubit
+           blade (optional): Integer, number of the current aerofoil (2D only)
          Output:
            vertex_list: list of vertices generated in cubit
            curve_list: list of curves generated in cubit
@@ -618,9 +618,8 @@ class TGAM:
         #    # 2, but in the linear case, it is the number of points/coordinates from the data/text file.
         #    surface_list = self.create_surface_cross_sections_cubit(2, num_cs, surface_list)
     else:
-        for i in range(self.num_blades):
-            curve_list = self.create_linear_lines_cross_sections_gmsh(i+1, num_points, vertex_list, curve_list)
-            surface_list = self.create_surface_cross_sections_gmsh(i+1, num_points, surface_list)
+        curve_list = self.create_linear_lines_cross_sections_gmsh(blade, num_points, vertex_list, curve_list)
+        surface_list = self.create_surface_cross_sections_gmsh(blade, num_points, surface_list)
     return (vertex_list, curve_list, surface_list)
 
 
@@ -1773,7 +1772,7 @@ class TGAM:
     if (isinstance(textfilename, list)): aerofoilfilename=textfilename[0]
     elif (isinstance(textfilename, str)): aerofoilfilename=textfilename
     coordinates = self.get_initial_cross_section_coordinates(aerofoilfilename, global_scale=global_scale)
-    vertex_list = self.write_2d_vertices(coordinates, vertex_list, blade_placement, rotation)
+    vertex_list = self.write_2d_vertices(coordinates, vertex_list, blade_placement[0], rotation[0])
 
     # Number of coordinates from textfile:
     num_2d_coords = len(coordinates)
@@ -1799,12 +1798,30 @@ class TGAM:
 
 
     # Creating lines (linear or spline) to connect the points of each cross section generated and their surfaces:
-    (vertex_list, curve_list, surface_list) = self.create_lines_surface_cross_sections(num_2d_coords, num_cs, vertex_list, curve_list, surface_list)
+    (vertex_list, curve_list, surface_list) = self.create_lines_surface_cross_sections(num_2d_coords, num_cs, vertex_list, curve_list, surface_list, blade=1)
 
     if (cad_package == 'gmsh' and dimension == 2):
-        # Set physical ids:
+        # For additional aerofoils, do:
+        for i in range(1, num_blades):
+            if (isinstance(textfilename, list)):
+                aerofoilfilename = textfilename[i]
+            self.cadlines.append('\n'+self.commentchar+' Points of aerofoil '+str(i+1)+':')
+            coordinates = self.get_cross_section_coordinates(aerofoilfilename, global_scale=extrusion_scale[i])
+            vertex_list = self.write_2d_vertices(coordinates, vertex_list, blade_placement[i], rotation[i])
+            if (len(coordinates) != num_2d_coords):
+                    print "=================================================================================================="
+                    print "len(coordinates) = ", len(coordinates)
+                    print "num_2d_coords = ", num_2d_coords
+                    print "ERROR: The number of points per aerofoil cross section must be equal to the number of points "
+                    print "used for other aerofoil cross sections along a blade!"
+                    print "Exiting program..."
+                    raise SystemExit()
+            (vertex_list, curve_list, surface_list) = self.create_lines_surface_cross_sections(num_2d_coords, num_cs, vertex_list, curve_list, surface_list, blade=i+1)
+        # And physical ids:
         for i in range(num_blades):
+            # Set physical ids:
             self.set_physical_ids(i+1, num_2d_coords, curve_list, surface_list)
+
 
     # Apply twist to cross sections:
     if (dimension == 3):
