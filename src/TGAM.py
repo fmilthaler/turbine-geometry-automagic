@@ -798,7 +798,7 @@ class TGAM:
 
 
   def set_physical_ids(self, blade, num_points, curve_list, surface_list):
-    """ This subroutine set the physical ids of the blade cross section
+    """ This subroutine sets the physical ids of the blade cross section
          Input:
            blade: Integer of the i-th blade that we create the surface for
            num_points: Integer, number of points of original cross section
