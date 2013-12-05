@@ -459,7 +459,7 @@ class TGAM:
             # Get rotated coordinates:
             geo_coord = self.rotate_blade_point(rotation, M, geo_coord)
         for i in range(len(geo_coord)):
-            cadline = cadline+str(geo_coord[i])+', '
+            cadline = cadline+str(round(geo_coord[i], 5))+', ' # rounding to 5 decimals
         # At this point, all coordinates have been assembled,
         # now add as many zero coordinates for the missing dimensions:
         for i in range(3-len(coord)):
