@@ -441,10 +441,10 @@ class TGAM:
     if (rotation%360.0 != 0.0):
         # Get center point of blade:
         M = self.get_blade_centre_point(coordinates)
-        # We still have to scale it and move it, if corresponding arguments were given:
-        M[0] = M[0]*self.global_scale + placement[0]
-        M[1] = M[1]*self.global_scale + placement[1]
-        M[2] = M[2]*self.global_scale + placement[2]
+        # It is already scaled, but we still have to move it:
+        M[0] = M[0] + placement[0]
+        M[1] = M[1] + placement[1]
+        M[2] = M[2] + placement[2]
     for coord in coordinates:
         # increase pointid:
         pointid += 1
@@ -453,7 +453,7 @@ class TGAM:
         # and placement:
         geo_coord = []
         for i in range(len(coord)):
-            scaled_moved_coord = float(coord[i])*self.global_scale + placement[i]
+            scaled_moved_coord = float(coord[i]) + placement[i]
             geo_coord.append(scaled_moved_coord)
         if (rotation%360.0 != 0.0):
             # Get rotated coordinates:
