@@ -1835,8 +1835,8 @@ class TGAM:
 
     # Mesh the volumes:
     if (cad_package == 'cubit'):
-        self.mesh_turbine_cubit(group_list)
         if (dimension == 3):
+            self.mesh_turbine_cubit(group_list)
             # For as many turbines as specified, copy (if not first turbine) and move the turbine 
             # around to create several turbines and put them to their specified location:
             self.cadlines.append('\n'+self.commentchar+' Finishing off the turbine(s):')
