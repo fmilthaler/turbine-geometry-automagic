@@ -1704,7 +1704,7 @@ class TGAM:
         Output:
          outputfilename: String of the output filename
     """
-    outputfilename = inputfilename.split('.')[0]
+    outputfilename = '.'.join(inputfilename.split('.')[:-1])
     if (self.dimension == 3): postfix = '-3D'
     elif(self.dimension == 2): postfix = '-2D'
     else: print 'Error, invalid dimension given. Should never get here.'; raise SystemExit()
